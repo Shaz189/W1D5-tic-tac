@@ -1,3 +1,4 @@
+require 'byebug'
 require_relative 'tic_tac_toe'
 
 class TicTacToeNode
@@ -9,9 +10,23 @@ class TicTacToeNode
   end
 
   def losing_node?(evaluator)
+    # byebug
+    return true if board.winner == next_mover_mark
+    return false if board.winner == nil
+    
+    if evaluator == next_mover_mark
+      children.all? do |child|
+        losing_node?(next_mover_mark)
+      end
+    elsif evaluator != next_mover_mark
+      children.any? do |child|
+        losing_node?(evaluator)
+      end
+    end
   end
 
   def winning_node?(evaluator)
+    # !losing_node?(evaluator)
   end
 
   # This method generates an array of all moves that can be made after
